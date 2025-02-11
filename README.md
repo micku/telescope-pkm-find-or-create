@@ -1,23 +1,25 @@
-# Telescope PKM Find or Create
+# telescope-pkm-find-or-create.nvim
 
-A simple Telescope selector that creates a new file if none is found.
+Telescope PKM Find or Create is a simple tool designed to create a new file if none is found, acting as a Telescope selector.
+
+PKM stands for [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management).
 
 ## Background
 
-This is a small piece of an effort to build a Personal Knowledge Manager within Neovim.
+This plugin is a fragment of a larger effort aimed at building a Personal Knowledge Manager within Neovim.
 
-A small but useful feature of [Obsidian](https://obsidian.md/) is the CTRL+O (or CMD+O) binding which searches for existing notes or, if no such note exists, it creates a new one. I haven't found this already implemented as a Telescope extension.
+One of the useful features of [Obsidian](https://obsidian.md/) is the CTRL+O (or CMD+O) binding, which searches for existing notes or creates a new one if no such note exists. This functionality was missing as a Telescope extension, so this plugin fills that gap.
 
-This small feature reduces friction when creating new notes on the go, and I believe it boosts productivity, even just a tiny bit.
+This small feature significantly reduces friction when creating new notes on the go, potentially boosting productivity.
 
-## How to use
+## Installation and Usage
 
-Use your favourite package manager (or not) to include the plugin, and then load the extension in Telescope. Here is an example of a self-contained [lazy.nvim](https://github.com/folke/lazy.nvim) configuration which can be copy/pasted in a new file and then referenced in the lazy setup `spec` property:
+To use this plugin, include it using your preferred package manager, and then load the extension in Telescope. Here's an example of a self-contained [lazy.nvim](https://github.com/folke/lazy.nvim) configuration which can be copy/pasted into a new file and then referenced in the lazy setup `spec` property:
 
-```
+```lua
 return {
     {
-        "micku/telescope-pkm-find-or-create",
+        "micku/telescope-pkm-find-or-create.nvim",
         cond = function()
             local cwd = vim.fn.getcwd()
             local folder_name = "My PKM"
@@ -41,14 +43,15 @@ return {
 }
 ```
 
-Here is a breakdown of what is happening:
+### Configuration Breakdown
 
-* Get the plugin from this repo;
-* `cond` enables the plugin only if cwd is the "My PKM" folder, which is the root of the PKM repository;
-* In the `config` section a few things happen:
-  * `require("telescope").setup()` runs on top of the main Telescope configuration, this is helpful to keep all of this plugin configuration in the same place;
-  * Then the `pkm_find` extension is configured, there are only 2 configuration options:
-    * `subfolder` is a subfolder of the PKM path where new files will be created; it can be omitted/empty, in such case files are created in the root directory;
-    * `file_extension` is the file extension of the files that will be created; this can also be omitted/empty to not add an extension.
-  * `require("telescope").load_extension("pkm_find")` tells Telescope that it can load the new extension;
-  * `vim.api.nvim_set_keymap...` binds the find or create function, in my case it overrides the default finder used in any other working directory.
+Here's a step-by-step breakdown of the most relevant configuration parts:
+
+* `cond` enables the plugin only if the current working directory (cwd) is the "My PKM" folder, which is the root of the PKM repository.
+* The `config` section does a few things:
+  * `require("telescope").setup()` runs on top of the main Telescope configuration, keeping all plugin configurations in one place.
+  * The `pkm_find` extension is then configured with two options:
+    * `subfolder` is a subfolder of the PKM path where new files will be created. If omitted or empty, files are created in the root directory.
+    * `file_extension` is the file extension for the new files. This can also be omitted or left empty to not add an extension.
+  * `require("telescope").load_extension("pkm_find")` instructs Telescope to load the new extension.
+  * `vim.api.nvim_set_keymap...` binds the find or create function, overriding the default finder used in any other working directory in my case.
